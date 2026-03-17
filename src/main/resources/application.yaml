@@ -10,6 +10,8 @@ spring:
     enabled: true
     repair-on-migrate: true
 
+server:
+  port: ${PORT:8080}
 
 
 
