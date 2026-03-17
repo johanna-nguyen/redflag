@@ -1,11 +1,19 @@
 services:
 
-  mysql:
-    image: mysql:8
+  postgres:
+    image: postgres:16
     environment:
-      MYSQL_ROOT_PASSWORD:  ${DB_PASSWORD}
-      MYSQL_DATABASE: report_db
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: report_db
     restart: unless-stopped
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USERNAME} -d report_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
 
 
   springboot-app:
@@ -13,9 +21,15 @@ services:
     ports:
       - "8080:8080"
     environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/report_db
+      DB_HOST: postgres
+      DB_PORT: 5432
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/report_db
       SPRING_DATASOURCE_USERNAME:  ${DB_USERNAME}
       SPRING_DATASOURCE_PASSWORD:  ${DB_PASSWORD}
+      SPRING_DATASOURCE_DRIVER_CLASS_NAME: org.postgresql.Driver
     depends_on:
-      - mysql
+      - postgres
     restart: on-failure
+
+volumes:
+  postgres_data:

@@ -1,6 +1,6 @@
 CREATE TABLE moderator
 (
-    id       BIGINT AUTO_INCREMENT NOT NULL,
+    id       BIGSERIAL NOT NULL,
     username VARCHAR(255)          NULL,
     password VARCHAR(255)          NULL,
     role   VARCHAR(255)          NULL,

@@ -1,6 +1,5 @@
 ALTER TABLE report
-    MODIFY first_name CHAR(1) NULL;
+    ALTER COLUMN first_name TYPE CHAR(1);
 
 ALTER TABLE report
-    MODIFY last_name CHAR(1) NULL;
-
+    ALTER COLUMN last_name TYPE CHAR(1);
